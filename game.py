@@ -3,28 +3,29 @@ from pygame import *
 SCREEN_WIDTH = 1800
 SCREEN_HEIGHT = 900
 Size = (SCREEN_WIDTH, SCREEN_HEIGHT)
+
 window = display.set_mode(Size)
 display.set_caption('Catch Me If You Can')
 
 background = transform.scale(image.load('Background.png'), Size)
 
 GuySize  = (150, 200 )
-FoodSize = (100, 100)
+CopSize = (200, 200)
 
-Guy = transform.scale( image.load('Guy.png') , GuySize )
-Food = transform.scale( image.load('Food.png') , FoodSize )
+Guy = transform.scale(image.load('Guy.png'), GuySize)
+Cop = transform.scale( image.load('Cop.png') , CopSize )
 
 # Player properties
-GuyPosx = SCREEN_WIDTH // 2 - GuySize[0] // 2
-GuyPosy = SCREEN_HEIGHT // 2 - GuySize[1] // 2
+GuyPosx = SCREEN_WIDTH // 2 
+GuyPosy = SCREEN_HEIGHT // 2 
 GuySpeed = 5
 
 
-FoodPosx = 100
-FoodPosy = 100
+CopPosx = 100
+CopPosy = 100
+
 
 game = True
-
 
 
 
@@ -46,8 +47,9 @@ while game:
         GuyPosy += GuySpeed
         
 
-
     window.blit(background, (0, 0))
     window.blit(Guy, (GuyPosx, GuyPosy))
-    window.blit(Food, (FoodPosx, FoodPosy))
+    window.blit(Cop, (CopPosx, CopPosy))
+
     display.update()
+
