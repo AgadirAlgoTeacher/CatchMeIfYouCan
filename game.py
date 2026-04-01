@@ -50,6 +50,6 @@ while game:
     window.blit(background, (0, 0))
     window.blit(Guy, (GuyPosx, GuyPosy))
     window.blit(Cop, (CopPosx, CopPosy))
-
+    # add the obstacles
     display.update()
 
