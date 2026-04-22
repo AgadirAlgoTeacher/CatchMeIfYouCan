@@ -48,26 +48,26 @@ while game:
     keys = key.get_pressed()
     if keys[K_LEFT] and GuyPosx > 0:
         GuyPosx -= GuySpeed
-        angle = 90
+        angle = -180
     if keys[K_RIGHT] and GuyPosx < SCREEN_WIDTH - GuySize[0]:
         GuyPosx += GuySpeed
-        angle = -90
+        angle = 0
     if keys[K_UP] and GuyPosy > 0:
         GuyPosy -= GuySpeed
-        angle = 180
+        angle = 90
     if keys[K_DOWN] and GuyPosy < SCREEN_HEIGHT - GuySize[1]:
         GuyPosy += GuySpeed
-        angle = -180
+        angle = -90
 
         
     if keys[K_LEFT] and keys[K_DOWN]:
-        angle = -45
-    if keys[K_LEFT] and keys[K_UP]:
-        angle = 45 
-    if keys[K_RIGHT] and keys[K_DOWN]:
         angle = -135
-    if keys[K_RIGHT] and keys[K_UP]:
+    if keys[K_LEFT] and keys[K_UP]:
         angle = 135
+    if keys[K_RIGHT] and keys[K_DOWN]:
+        angle = -45
+    if keys[K_RIGHT] and keys[K_UP]:
+        angle = 45
 
     #moving the car up and down
     CarPosy += CarSpeed
