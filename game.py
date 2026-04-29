@@ -2,8 +2,8 @@ from pygame import *
 
 init()
 
-SCREEN_WIDTH = display.Info().current_w
-SCREEN_HEIGHT = display.Info().current_h
+SCREEN_WIDTH = display.Info().current_w //1.05
+SCREEN_HEIGHT = display.Info().current_h //1.05
 
 Size = (SCREEN_WIDTH, SCREEN_HEIGHT)
 
@@ -12,17 +12,17 @@ display.set_caption('Catch Me If You Can')
 
 background = transform.scale(image.load('imgs/background.png'), Size)
 
-GuySize  = (100, 80 )
-CopSize = (100, 80)
-CarSize = (200, 150)
-
+GuySize  = (SCREEN_WIDTH // 25, SCREEN_HEIGHT // 17)
+CopSize = (SCREEN_WIDTH // 20, SCREEN_HEIGHT // 16)
+CarSize = (SCREEN_WIDTH // 10, SCREEN_HEIGHT // 10)
+HUDSize = (SCREEN_WIDTH // 3, SCREEN_HEIGHT // 10)
 #loading images
-Guy = transform.scale(image.load('imgs/guy.png'), GuySize)
+Guy = transform.scale(image.load('imgs/GuyIdle.png').convert_alpha(), GuySize)
 mouse.set_visible(False)
-gun = transform.scale(image.load('imgs/gun.png'), (50, 50))
-Cop = transform.scale( image.load('imgs/cop.png') , CopSize )
-car = transform.rotate(transform.scale(image.load('imgs/car.png'), CarSize), 90)
-
+gun = transform.scale(image.load('imgs/gun.png').convert_alpha(), (30, 30))
+Cop = transform.scale( image.load('imgs/CopIdle.png').convert_alpha() , CopSize )
+car = transform.rotate(transform.scale(image.load('imgs/Car.png').convert_alpha(), CarSize), 90)
+HUD = transform.scale(image.load('imgs/HUD.png').convert_alpha(), HUDSize)  
 
 # entities properties
 GuyPosx = 10 
@@ -95,6 +95,6 @@ while game:
     window.blit(gun, mouse.get_pos())
     window.blit(transform.rotate(Cop, cop_angle), (CopPosx, CopPosy))
     window.blit(car, (CarPosx, CarPosy))
-    
+    window.blit(HUD, (0, SCREEN_HEIGHT - HUDSize[1]))
     display.update()
 
