@@ -1,7 +1,10 @@
 from pygame import *
 
-SCREEN_WIDTH = 1800
-SCREEN_HEIGHT = 900
+init()
+
+SCREEN_WIDTH = display.Info().current_w
+SCREEN_HEIGHT = display.Info().current_h
+
 Size = (SCREEN_WIDTH, SCREEN_HEIGHT)
 
 window = display.set_mode(Size)
@@ -15,6 +18,8 @@ CarSize = (200, 150)
 
 #loading images
 Guy = transform.scale(image.load('imgs/guy.png'), GuySize)
+mouse.set_visible(False)
+gun = transform.scale(image.load('imgs/gun.png'), (50, 50))
 Cop = transform.scale( image.load('imgs/cop.png') , CopSize )
 car = transform.rotate(transform.scale(image.load('imgs/car.png'), CarSize), 90)
 
@@ -73,12 +78,22 @@ while game:
     CarPosy += CarSpeed
     if CarPosy <= 0 or CarPosy >= SCREEN_HEIGHT - 10:
         CarSpeed *= -1
-
-
+    
+    # cop follows guy
+    if CopPosx < GuyPosx: CopPosx += CopSpeed; cop_angle = 0
+    if CopPosx > GuyPosx: CopPosx -= CopSpeed; cop_angle = 180
+    if CopPosy < GuyPosy: CopPosy += CopSpeed; cop_angle = -90
+    if CopPosy > GuyPosy: CopPosy -= CopSpeed; cop_angle = 90
+    # cop angle
+    if CopPosx < GuyPosx and CopPosy < GuyPosy: cop_angle = -45
+    if CopPosx < GuyPosx and CopPosy > GuyPosy: cop_angle = 45
+    if CopPosx > GuyPosx and CopPosy < GuyPosy: cop_angle = -135
+    if CopPosx > GuyPosx and CopPosy > GuyPosy: cop_angle = 135
 
     window.blit(background, (0, 0))
     window.blit(transform.rotate(Guy, angle), (GuyPosx, GuyPosy))
-    window.blit(Cop, (CopPosx, CopPosy))
+    window.blit(gun, mouse.get_pos())
+    window.blit(transform.rotate(Cop, cop_angle), (CopPosx, CopPosy))
     window.blit(car, (CarPosx, CarPosy))
     
     display.update()
