@@ -1,4 +1,5 @@
 from pygame import *
+from random import randint
 
 init()
 
@@ -15,16 +16,17 @@ background = transform.scale(image.load('imgs/background.png'), Size)
 GuySize  = (SCREEN_WIDTH // 25, SCREEN_HEIGHT // 17)
 CopSize = (SCREEN_WIDTH // 20, SCREEN_HEIGHT // 16)
 CarSize = (SCREEN_WIDTH // 10, SCREEN_HEIGHT // 10)
-HUDSize = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 10)
+IconSize = (SCREEN_WIDTH // 13, SCREEN_HEIGHT // 10)
+
 #loading images
 Guy = transform.scale(image.load('imgs/GuyIdle.png').convert_alpha(), GuySize)
 gun = transform.scale(image.load('imgs/gun.png').convert_alpha(), (30, 30))
 Cop = transform.scale( image.load('imgs/CopIdle.png').convert_alpha() , CopSize )
 Car = transform.rotate(transform.scale(image.load('imgs/Car.png').convert_alpha(), CarSize), 90)
-Health = transform.scale(image.load('imgs/Health.png').convert_alpha(), HUDSize)  
-Tazer = transform.scale(image.load('imgs/Tazer.png').convert_alpha(), HUDSize)
-Money = transform.scale(image.load('imgs/Money.png').convert_alpha(), HUDSize)
-
+HealthImg  = transform.scale(image.load('imgs/Health.png').convert_alpha(), IconSize)  
+TazerImg = transform.scale(image.load('imgs/Tazer.png').convert_alpha(), IconSize)
+MoneyImg = transform.scale(image.load('imgs/Money.png').convert_alpha(), IconSize)
+TopScoreImg = transform.scale(image.load('imgs/TopScore.png').convert_alpha(), IconSize)
 mouse.set_visible(False)
 
 #game variables
@@ -57,6 +59,8 @@ while game:
     for e in event.get():
         if e.type == QUIT:
             game = False
+    
+    window.blit(background, (0, 0))
 
     #detect keys
     keys = key.get_pressed()
@@ -98,23 +102,31 @@ while game:
     if CopPosx < GuyPosx and CopPosy > GuyPosy: Cop_angle = 45
     if CopPosx > GuyPosx and CopPosy < GuyPosy: Cop_angle = -135
     if CopPosx > GuyPosx and CopPosy > GuyPosy: Cop_angle = 135
+
+    #detecting collision
+    Guy_rect = Guy.get_rect(topleft=(GuyPosx, GuyPosy))
+    Cop_rect = Cop.get_rect(topleft=(CopPosx, CopPosy))
+    Car_rect = Car.get_rect(topleft=(CarPosx, CarPosy))
+    if Guy_rect.colliderect(Cop_rect) or Guy_rect.colliderect(Car_rect):
+        window.blit(background, (randint(-5, 5), randint(-5, 5)))
+        red = Surface(Size, SRCALPHA)
+        red.fill((255, 0, 0, 80))
+        window.blit(red, (0, 0))
     
-    window.blit(background, (0, 0))
+    #drawing everything
     window.blit(transform.rotate(Guy, angle), (GuyPosx, GuyPosy))
     window.blit(gun, mouse.get_pos())
     window.blit(transform.rotate(Cop, Cop_angle), (CopPosx, CopPosy))
     window.blit(Car, (CarPosx, CarPosy))
-    # window.blit(HUD, (0, SCREEN_HEIGHT - HUDSize[1]))
+    window.blit(HealthImg, (10, SCREEN_HEIGHT - IconSize[1] - 5))
+    window.blit(TazerImg, (IconSize[0]* 2 , SCREEN_HEIGHT- IconSize[1] - 5))
+    window.blit(MoneyImg, (IconSize[0] * 4 , SCREEN_HEIGHT - IconSize[1] - 5 ))
+    window.blit(TopScoreImg, (IconSize[0] * 6, SCREEN_HEIGHT - IconSize[1] - 5))
 
 
-    Guy_rect = Guy.get_rect(topleft=(GuyPosx, GuyPosy))
-    Cop_rect = Cop.get_rect(topleft=(CopPosx, CopPosy))
-    Car_rect = Car.get_rect(topleft=(CarPosx, CarPosy))
 
-    if Guy_rect.colliderect(Cop_rect):
-        print('hit by Cop!')
-    if Guy_rect.colliderect(Car_rect):
-        print('hit by Car!')
+
+
 
 
     display.update()
