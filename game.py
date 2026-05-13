@@ -33,6 +33,7 @@ mouse.set_visible(False)
 tazer = 5
 Health = 100
 Money = 0
+TopScore = 0
 font = font.SysFont(None, 40)
 
 # entities properties
@@ -107,6 +108,7 @@ while game:
     Guy_rect = Guy.get_rect(topleft=(GuyPosx, GuyPosy))
     Cop_rect = Cop.get_rect(topleft=(CopPosx, CopPosy))
     Car_rect = Car.get_rect(topleft=(CarPosx, CarPosy))
+
     if Guy_rect.colliderect(Cop_rect) or Guy_rect.colliderect(Car_rect):
         window.blit(background, (randint(-5, 5), randint(-5, 5)))
         red = Surface(Size, SRCALPHA)
@@ -118,11 +120,17 @@ while game:
     window.blit(gun, mouse.get_pos())
     window.blit(transform.rotate(Cop, Cop_angle), (CopPosx, CopPosy))
     window.blit(Car, (CarPosx, CarPosy))
+    #drawing icons hud
     window.blit(HealthImg, (10, SCREEN_HEIGHT - IconSize[1] - 5))
+    window.blit(font.render(str(Health), True, (255, 255, 255)), (IconSize[0] + 15, SCREEN_HEIGHT - IconSize[1] //1.5))
     window.blit(TazerImg, (IconSize[0]* 2 , SCREEN_HEIGHT- IconSize[1] - 5))
+    window.blit(font.render(str(tazer), True, (255, 255, 255)), (IconSize[0] * 3 + 15, SCREEN_HEIGHT - IconSize[1] //1.5))
     window.blit(MoneyImg, (IconSize[0] * 4 , SCREEN_HEIGHT - IconSize[1] - 5 ))
+    window.blit(font.render(str(Money), True, (255, 255, 255)), (IconSize[0] * 5 + 15, SCREEN_HEIGHT - IconSize[1] //1.5))
     window.blit(TopScoreImg, (IconSize[0] * 6, SCREEN_HEIGHT - IconSize[1] - 5))
-
+    window.blit(font.render(str(TopScore), True, (255, 255, 255)), (IconSize[0] * 7 + 15, SCREEN_HEIGHT - IconSize[1] //1.5))  
+    #Timer
+    window.blit(font.render(f'Time: {int(time.get_ticks() / 1000)}s', True, (255, 255, 255)), (SCREEN_WIDTH - 150, 10))
 
 
 
